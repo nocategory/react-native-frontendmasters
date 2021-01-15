@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   View,
   Text,
@@ -50,25 +50,42 @@ const colorPalettes = [
 ]
 
 const Home = ({ navigation }) => {
+  const [palettes, setPalettes] = useState()
+  /*const fetchPalettes = useCallback(async () => {
+    let data = await fetch(
+      'https://color-palette-api.kadikraman.now.sh/palettes',
+    )
+    data = data.json()
+    setPalettes(data)
+  })*/
+  useEffect(() => {
+    async function fetchData() {
+      const p = await fetch(
+        'https://color-palette-api.kadikraman.now.sh/palettes',
+      )
+        .then((res) => res.json())
+        .then((data) => setPalettes(data))
+    }
+    console.log('yo!')
+    fetchData()
+  }, [])
   return (
     <View style={styles.view}>
       <FlatList
-        data={colorPalettes}
-        scrollEnabled={false}
-        keyExtractor={(item, index) => index}
-        renderItem={({ item, index }) => {
-          return (
-            <PalettePreview
-              onPress={() =>
-                navigation.navigate('ColorPalette', {
-                  paletteName: item.paletteName,
-                  palette: item.palette,
-                })
-              }
-              palette={item}
-            />
-          )
-        }}
+        data={palettes}
+        scrollEnabled={true}
+        keyExtractor={(item) => item.paletteName}
+        renderItem={({ item }) => (
+          <PalettePreview
+            onPress={() =>
+              navigation.navigate('ColorPalette', {
+                paletteName: item.paletteName,
+                palette: item.colors,
+              })
+            }
+            palette={item}
+          />
+        )}
       />
     </View>
   )

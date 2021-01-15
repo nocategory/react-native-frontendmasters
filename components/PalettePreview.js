@@ -8,9 +8,8 @@ import {
 } from 'react-native'
 
 const PalettePreview = ({ onPress, palette }) => {
-  const colors = palette.palette.slice(0, 3)
+  const colors = palette.colors.slice(0, 3)
   return (
-    //<Text>{palette.paletteName}</Text>
     <TouchableOpacity onPress={onPress}>
       <Text style={styles.heading}>{palette.paletteName}</Text>
       <FlatList
