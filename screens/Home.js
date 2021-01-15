@@ -4,14 +4,26 @@ import PalettePreview from '../components/PalettePreview'
 
 const Home = ({ navigation }) => {
   const [palettes, setPalettes] = useState()
+  const [isRefreshing, setRefreshStatus] = useState(false)
+
+  async function fetchData() {
+    await fetch('https://color-palette-api.kadikraman.now.sh/palettes')
+      .then((res) => res.json())
+      .then((data) => setPalettes(data))
+  }
+
+  async function refreshData() {
+    setRefreshStatus(true)
+    await fetchData()
+    setTimeout(() => {
+      setRefreshStatus(false)
+    }, 5000)
+  }
+
   useEffect(() => {
-    async function fetchData() {
-      await fetch('https://color-palette-api.kadikraman.now.sh/palettes')
-        .then((res) => res.json())
-        .then((data) => setPalettes(data))
-    }
     fetchData()
   }, [])
+
   return (
     <View style={styles.view}>
       <FlatList
@@ -29,6 +41,8 @@ const Home = ({ navigation }) => {
             palette={item}
           />
         )}
+        refreshing={isRefreshing}
+        onRefresh={() => refreshData()}
       />
     </View>
   )
