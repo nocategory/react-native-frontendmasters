@@ -196,7 +196,14 @@ const ColorPaletteModal = ({ navigation }) => {
         style={{ marginTop: 20 }}
         renderItem={({ item }) => (
           <View style={styles.colorSelection}>
-            <Text style={styles.colorSelectionText}>{item.colorName}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={[
+                  styles.color,
+                  { backgroundColor: item.hexCode },
+                ]}></View>
+              <Text style={styles.colorSelectionText}>{item.colorName}</Text>
+            </View>
             <Switch
               trackColor={{ false: '#000', true: '#008080' }}
               thumbColor={enabledColors.includes(item) ? '#fff' : '#f4f3f4'}
@@ -249,6 +256,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  color: {
+    shadowOffset: { width: -3, height: 10 },
+    borderWidth: 1.2,
+    borderColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    elevation: 2,
+    height: 40,
+    width: 40,
+    marginRight: 12,
   },
 })
 
